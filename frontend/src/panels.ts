@@ -39,8 +39,19 @@ export async function echarts(ctx: PanelCtx, elem: HTMLDivElement) {
 
   // use SVG renderer during HTML e2e tests, to compare snapshots
   const renderer = window.navigator.userAgent === "puppeteer-html" ? "svg" : undefined;
-  const isDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  // set by ThemeToggle in Fava
+  const localStorageThemeSetting = localStorage.getItem('theme');
+  const isDarkMode = (
+    window.matchMedia && 
+    window.matchMedia("(prefers-color-scheme: dark)").matches && 
+    localStorageThemeSetting != "light"
+  );
   const theme = isDarkMode ? "dark" : undefined;
+  
+  // data-theme used by some CSS configurations
+  if (theme == "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
   const chart = echartslib.init(elem, theme, { renderer });
   if (options.onClick) {
     chart.on("click", (options as any).onClick);

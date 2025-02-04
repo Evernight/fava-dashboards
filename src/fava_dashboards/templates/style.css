@@ -21,7 +21,7 @@
     }
 }
 
-@media (prefers-color-scheme: dark) {
+[data-theme="dark"] {
     #dashboard a {
         color: #d7dce2; /* --heading-color from fava */
     }
